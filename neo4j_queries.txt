@@ -1,0 +1,149 @@
+Main Relationships:
+// (User) - sends -> (Kudos) - published_at -> (Place)
+// (Kudos) - delivered_to -> (User)
+------------------------------------------------------------
+
+CREATE INDEX ON :User(name)
+
+CREATE CONSTRAINT ON (u:User)
+ASSERT u.name IS UNIQUE
+
+CREATE (u:User{name: 'hulk', user_id: 1}) RETURN u
+CREATE (u:User{name: 'spiderman', user_id: 2}) RETURN u
+CREATE (u:User{name: 'ironman', user_id: 3}) RETURN u
+CREATE (u:User{name: 'thor', user_id: 4}) RETURN u
+
+MATCH (n:User) RETURN n LIMIT 25
+
+------------------------------------------------------------
+
+CREATE INDEX ON :Place(name)
+
+CREATE CONSTRAINT ON (p:Place)
+ASSERT p.name IS UNIQUE
+
+CREATE (p:Place{name: 'JalaSoft'}) RETURN p
+CREATE (p:Place{name: 'AssureSoft'}) RETURN p
+CREATE (p:Place{name: 'UMSS'}) RETURN p
+CREATE (p:Place{name: 'UPB'}) RETURN p
+
+MATCH (n:Place) RETURN n LIMIT 25
+
+------------------------------------------------------------
+
+CREATE INDEX ON :Kudos(name)
+
+DROP CONSTRAINT ON (k:Kudos)
+ASSERT k.name IS UNIQUE
+
+CREATE (k:Kudos{name: 'thanks', text: 'Thank you very much blablabla...', created_date: datetime()}) RETURN k
+CREATE (k:Kudos{name: 'thanks', text: 'Thank you for helping me blablabla...', created_date: datetime()}) RETURN k
+CREATE (k:Kudos{name: 'Well Done', text: 'Well done we have blablabla...', created_date: datetime()}) RETURN k
+CREATE (k:Kudos{name: 'Awesome!', text: 'You are awesome blablabla...', created_date: datetime()}) RETURN k
+CREATE (k:Kudos{name: 'Great Job', text: 'You did a great job blablabla...', created_date: datetime()}) RETURN k
+CREATE (k:Kudos{name: 'Wonderful', text: 'That was a wonderful place blablabla...', created_date: datetime()}) RETURN k
+CREATE (k:Kudos{name: 'Incredible', text: 'That was incredible blablabla...', created_date: datetime()}) RETURN k
+
+MATCH (n:Kudos) RETURN n LIMIT 25
+
+------------------------------------------------------------
+
+// (Kudos) - published_at -> (Place)
+
+MATCH (k:Kudos) WHERE id(k)=1182
+MATCH (pl:Place) WHERE id(pl)=1161
+CREATE p = (k) -[:PUBLISHED_AT]-> (pl) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1163
+MATCH (pl:Place) WHERE id(pl)=1181
+CREATE p = (k) -[:PUBLISHED_AT]-> (pl) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1162
+MATCH (pl:Place) WHERE id(pl)=1122
+CREATE p = (k) -[:PUBLISHED_AT]-> (pl) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1142
+MATCH (pl:Place) WHERE id(pl)=1122
+CREATE p = (k) -[:PUBLISHED_AT]-> (pl) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1123
+MATCH (pl:Place) WHERE id(pl)=1141
+CREATE p = (k) -[:PUBLISHED_AT]-> (pl) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1083
+MATCH (pl:Place) WHERE id(pl)=1161
+CREATE p = (k) -[:PUBLISHED_AT]-> (pl) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1183
+MATCH (pl:Place) WHERE id(pl)=1122
+CREATE p = (k) -[:PUBLISHED_AT]-> (pl) RETURN p
+
+------------------------------------------------------------
+
+// (User) - sends -> (Kudos)
+// (Kudos) - delivered_to -> (User)
+
+// From u1 to u2 (1)
+MATCH (u1:User) WHERE id(u1)=1101
+MATCH (k:Kudos) WHERE id(k)=1182
+CREATE p = (u1) -[:SENDS]-> (k) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1182
+MATCH (u2:User) WHERE id(u2)=1121
+CREATE p = (k) -[:DELIVERED_TO]-> (u2) RETURN p
+
+// From u1 to u2 (2)
+MATCH (u1:User) WHERE id(u1)=1121
+MATCH (k:Kudos) WHERE id(k)=1163
+CREATE p = (u1) -[:SENDS]-> (k) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1163
+MATCH (u2:User) WHERE id(u2)=1081
+CREATE p = (k) -[:DELIVERED_TO]-> (u2) RETURN p
+
+// From u1 to u2 (3)
+MATCH (u1:User) WHERE id(u1)=1081
+MATCH (k:Kudos) WHERE id(k)=1162
+CREATE p = (u1) -[:SENDS]-> (k) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1162
+MATCH (u2:User) WHERE id(u2)=1082
+CREATE p = (k) -[:DELIVERED_TO]-> (u2) RETURN p
+
+// From u1 to u2 (4)
+MATCH (u1:User) WHERE id(u1)=1081
+MATCH (k:Kudos) WHERE id(k)=1142
+CREATE p = (u1) -[:SENDS]-> (k) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1142
+MATCH (u2:User) WHERE id(u2)=1121
+CREATE p = (k) -[:DELIVERED_TO]-> (u2) RETURN p
+
+// From u1 to u2 (5)
+MATCH (u1:User) WHERE id(u1)=1082
+MATCH (k:Kudos) WHERE id(k)=1123
+CREATE p = (u1) -[:SENDS]-> (k) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1123
+MATCH (u2:User) WHERE id(u2)=1101
+CREATE p = (k) -[:DELIVERED_TO]-> (u2) RETURN p
+
+// From u1 to u2 (6)
+MATCH (u1:User) WHERE id(u1)=1121
+MATCH (k:Kudos) WHERE id(k)=1083
+CREATE p = (u1) -[:SENDS]-> (k) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1083
+MATCH (u2:User) WHERE id(u2)=1082
+CREATE p = (k) -[:DELIVERED_TO]-> (u2) RETURN p
+
+// From u1 to u2 (7)
+MATCH (u1:User) WHERE id(u1)=1082
+MATCH (k:Kudos) WHERE id(k)=1183
+CREATE p = (u1) -[:SENDS]-> (k) RETURN p
+
+MATCH (k:Kudos) WHERE id(k)=1183
+MATCH (u2:User) WHERE id(u2)=1121
+CREATE p = (k) -[:DELIVERED_TO]-> (u2) RETURN p
+
+------------------------------------------------------------
