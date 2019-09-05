@@ -32,3 +32,18 @@ exports.getKudos = (request, response) => {
     })
     .then(() => session.close());
 };
+
+exports.deleteKudos = (request, response) => {
+    const kudosId = Number(request.params.id);
+    var session = driver.session()
+    session.run('MATCH (k:Kudos) WHERE id(k)='+kudosId+' \
+                 DELETE k')
+
+    .then(result => {
+        response.json({"kudos_deleted": "true"});
+    })
+    .catch(error => {
+        console.log(error)
+    })
+    .then(() => session.close());
+};
