@@ -1,0 +1,31 @@
+{
+  "name": "kudos_api",
+  "version": "1.0.0",
+  "description": "Kudos API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/utarefson/alsie_kudos_nosql.git"
+  },
+  "keywords": [
+    "users",
+    "api"
+  ],
+  "author": "Boris Dominguez",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/utarefson/alsie_kudos_nosql/issues"
+  },
+  "homepage": "https://github.com/utarefson/alsie_kudos_nosql#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "neo4j-driver": "^1.7.2"
+  }
+}

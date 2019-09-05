@@ -1,0 +1,9 @@
+{
+    "neo4j": {
+        "host" : "localhost",
+        "port": 7687,
+        "user" : "neo4j",
+        "password" : "neo4j",
+        "database" : "kudosgdb"
+    }
+}
